@@ -1,0 +1,80 @@
+import random
+from random import randint, choice
+ 
+print(
+    '"Игра с конфетами"\n'
+    'В игре вы будете играть против бота\n'
+    'Первый ход определяется жеребьевкой.\n'
+    'Игроки ходят, совершая ход друг после друга\n'
+    'Правила игры\n'
+    'За один ход можно забрать не более 28 конфет\n'
+    'Тот, кому достанется последняя конфета - проиграл\n'
+    )
+ 
+messages = ['Ваш ход брать конфеты']
+max_number = 0
+ 
+def introduce_players():
+    player1 = input('Первый игрок, представьтесь\n')
+    player2 = 'Бот'
+    print(f'Очень приятно, сегодня Вы играете с ботом')
+    return [player1, player2]
+ 
+def sweets_game(players):
+    global max_number
+    total_sweets = 100
+    max_number = int(28)
+    first = int(input(f'{players[0]}, если хотите ходить первым, нажмите 1, если нет, нажмите 2\n'))
+    if first != 1:
+        first = 0
+    return [total_sweets, max_number, int(first)]
+ 
+max_move = max_number
+ 
+def game_player_vs_bot(sweets, players, messages):
+    global max_number
+    count = sweets[2]
+    
+ 
+ 
+    while sweets[0] > 0:
+        if sweets[0] == (max_number and sweets[0] < max_number and sweets[0] > 1):
+            move = sweets[0] -1
+            print(f'Я забираю {move}')
+ 
+        elif not count % 2:
+            move = random.randint(1, sweets[1])
+            print(f'Я забираю {move}')
+        else:
+            print(f'{players[0]}, {messages}')
+            move = int(input())
+            if move > sweets[0] or move > sweets[1]:
+                print(
+                    f'Можно взять не более {sweets[1]} конфет, у нас всего {sweets[0]} конфет')
+                chance = 2
+                while chance > 0:
+                    if sweets[0] >= move <= sweets[1]:
+                        break
+                    print(f'Попробуйте ещё раз, у Вас {chance} попытки')
+                    move = int(input())
+                    chance -= 1
+                else:
+                    return print(f'Попыток не осталось. Game over!')
+        sweets[0] = sweets[0] - move
+        if sweets[0] > 0:
+            print(f'Осталось {sweets[0]} конфет')
+        else:
+            ('Все конфеты разобраны.')
+        count += 1
+    return players[not count % 2]
+ 
+ 
+players = introduce_players()
+sweets = sweets_game(players)
+ 
+looser = game_player_vs_bot(sweets, players, messages)
+if not looser:
+    print('У нас нет проигравшего.')
+else:
+    print(
+        f'Поздравляю! {looser} проиграл! Второму игроку достаются все конфеты!')
